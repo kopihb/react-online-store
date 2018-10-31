@@ -19,7 +19,7 @@ const TextArea = styled.textarea`
 const ProductComponent = ({ title, id, description, onSubmit, onChange, image, price}) => (
     <form onSubmit={onSubmit}>
         <InputField name="title"  value={title} onChange={onChange('title')}/>
-        <TextArea name="description"  defaultValue={description} />
+        <TextArea name="description"  defaultValue={description} onChange={onChange('description')}/>
         <button type="submit"> Save </button>
     </form>
 );
