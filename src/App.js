@@ -1,25 +1,53 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+
 import './App.css';
+import { routes } from './routes';
+import { Link, Route } from 'react-router-dom';
+import { AdminPage } from './scenes/admin';
+import { products } from './data/products';
+
+const getProducts = async () => new Promise(
+    (resolve, reject) => {
+        setTimeout(() => resolve(products), 2100);
+    },
+);
 
 class App extends Component {
+  state = {
+      products: [],
+      loading: true,
+  };
+
+  async componentDidMount(){
+    const prods = await getProducts();
+    this.setState({
+        products: prods,
+        loading: false,
+    })
+  }
+
   render() {
+
+      if (this.state.loading) {
+          return <h1>Loading</h1>
+      }
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+              <Link to={routes.admin}> Admin</Link>
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+
+          <Route
+              path={routes.admin}
+              render={
+                (renderProps) => (
+                    <AdminPage productList={this.state.products} {...renderProps}/>
+                )}
+          />
+
       </div>
     );
   }
